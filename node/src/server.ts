@@ -1,4 +1,8 @@
+import "reflect-metadata";
+
 import express, { Response, Request } from "express";
+
+import "./database";
 
 const port = 3333;
 

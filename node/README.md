@@ -5,3 +5,7 @@
 - install express, types express and make init server test
 - install typescript, ts-node-dev how dev and run: `yarn tsc --init`
 - change `strict`in `tsconfig.json` for false
+
+### create docker container
+
+`docker run --name nlw05_postgres -e POSTGRES_PASSWORD=123456789 -p :5432:5432 -d postgres`
