@@ -1,7 +1,6 @@
-import { getCustomRepository } from "typeorm";
+import { getCustomRepository, Repository } from "typeorm";
 
 import Settings from "../entities/Settings";
-
 import SettingsRepository from "../repositories/SettingsRepository";
 
 interface SettingCreateDTO {
@@ -10,18 +9,24 @@ interface SettingCreateDTO {
 }
 
 class SettingService {
-  async store({ chat, username }: SettingCreateDTO): Promise<Settings> {
-    const settingsRepository = getCustomRepository(SettingsRepository);
+  private settingsRepository: Repository<Settings>;
 
-    const userAlreadyExists = await settingsRepository.findOne({ username });
+  constructor() {
+    this.settingsRepository = getCustomRepository(SettingsRepository);
+  }
+
+  async store({ chat, username }: SettingCreateDTO): Promise<Settings> {
+    const userAlreadyExists = await this.settingsRepository.findOne({
+      username,
+    });
 
     if (userAlreadyExists) {
       throw new Error("User already exists!");
     }
 
-    const setting = settingsRepository.create({ chat, username });
+    const setting = this.settingsRepository.create({ chat, username });
 
-    await settingsRepository.save(setting);
+    await this.settingsRepository.save(setting);
 
     if (setting) {
       if (!setting.chat) setting.chat = true;
