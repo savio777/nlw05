@@ -1,32 +1,24 @@
 import { Request, Response } from "express";
 
-import { getCustomRepository } from "typeorm";
+import SettingService from "../services/SettingsService";
 
-import SettingsRepository from "../repositories/SettingsRepository";
-
-interface bodyPostDTO {
+interface BodyPostDTO {
   chat?: boolean;
   username: string;
 }
 
 class SettingsController {
   async store(req: Request, res: Response) {
+    const { username, chat }: BodyPostDTO = req.body;
+
+    const settingsRepository = new SettingService();
+
     try {
-      const settingsRepository = getCustomRepository(SettingsRepository);
+      const setting = await settingsRepository.store({ username, chat });
 
-      const { chat, username }: bodyPostDTO = req.body;
-
-      const setting = settingsRepository.create({ chat, username });
-
-      await settingsRepository.save(setting);
-
-      if (setting) {
-        if (!setting.chat) setting.chat = true;
-        return res.json(setting);
-      }
+      if (setting) return res.json(setting);
     } catch (error) {
-      console.log(error);
-      return;
+      return res.status(400).json({ message: error?.message });
     }
   }
 }
