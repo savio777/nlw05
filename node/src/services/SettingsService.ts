@@ -1,5 +1,7 @@
 import { getCustomRepository } from "typeorm";
 
+import Settings from "../entities/Settings";
+
 import SettingsRepository from "../repositories/SettingsRepository";
 
 interface SettingCreateDTO {
@@ -8,7 +10,7 @@ interface SettingCreateDTO {
 }
 
 class SettingService {
-  async store({ chat, username }: SettingCreateDTO) {
+  async store({ chat, username }: SettingCreateDTO): Promise<Settings> {
     const settingsRepository = getCustomRepository(SettingsRepository);
 
     const userAlreadyExists = await settingsRepository.findOne({ username });

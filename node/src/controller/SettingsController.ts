@@ -8,7 +8,7 @@ interface BodyPostDTO {
 }
 
 class SettingsController {
-  async store(req: Request, res: Response) {
+  async store(req: Request, res: Response): Promise<Response> {
     const { username, chat }: BodyPostDTO = req.body;
 
     const settingsRepository = new SettingService();
