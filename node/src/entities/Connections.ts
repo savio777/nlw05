@@ -3,7 +3,6 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
-  ManyToMany,
   ManyToOne,
   PrimaryColumn,
   UpdateDateColumn,
@@ -19,7 +18,7 @@ class Connections {
   admin_id?: string;
 
   @JoinColumn({ name: "user_id" })
-  @ManyToMany(() => Users)
+  @ManyToOne(() => Users)
   user: Users;
 
   @Column("uuid")

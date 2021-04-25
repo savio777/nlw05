@@ -5,10 +5,16 @@ const routes = Router();
 import SettingsController from "./controller/SettingsController";
 import UsersController from "./controller/UsersController";
 import MessagesController from "./controller/MessagesController";
+import ConnectionsController from "./controller/ConnectionsController";
 
 const settingsController = new SettingsController();
 const usersController = new UsersController();
 const messagesController = new MessagesController();
+const connectionsController = new ConnectionsController();
+
+// connections
+routes.get("/connections/get/:id", connectionsController.show);
+routes.get("/connections/whitoutadmin", connectionsController.showWhitoutAdmin);
 
 // settings
 routes.post("/settings", settingsController.store);

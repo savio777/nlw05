@@ -17,7 +17,8 @@ app.set("views", path.join(__dirname, "..", "public"));
 app.engine("html", require("ejs").renderFile);
 app.set("view engine", "html");
 
-app.get("/pages/client", (req, res) => res.render("html/client.html"));
+app.get("/pages/client", (_, res) => res.render("html/client.html"));
+app.get("/pages/admin", (_, res) => res.render("html/admin.html"));
 
 io.on("connection", (socket: Socket) => {
   console.log("socket.io connected: ", socket.id);
