@@ -8,6 +8,11 @@ interface SettingCreateDTO {
   username: string;
 }
 
+interface SettingUpdateDTO {
+  username: string;
+  chat: boolean;
+}
+
 class SettingService {
   private settingsRepository: Repository<Settings>;
 
@@ -15,7 +20,7 @@ class SettingService {
     this.settingsRepository = getCustomRepository(SettingsRepository);
   }
 
-  async store({ chat, username }: SettingCreateDTO): Promise<Settings> {
+  async create({ chat, username }: SettingCreateDTO): Promise<Settings> {
     const userAlreadyExists = await this.settingsRepository.findOne({
       username,
     });
@@ -32,6 +37,21 @@ class SettingService {
       if (!setting.chat) setting.chat = true;
       return setting;
     }
+  }
+
+  async findByUserName(username: string): Promise<Settings> {
+    const setting = await this.settingsRepository.findOne({ username });
+
+    return setting;
+  }
+
+  async update({ chat, username }: SettingUpdateDTO): Promise<void> {
+    const setting = await this.settingsRepository
+      .createQueryBuilder()
+      .update(Settings)
+      .set({ chat })
+      .where("username = :username", { username })
+      .execute();
   }
 }
 

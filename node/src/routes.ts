@@ -12,6 +12,8 @@ const messagesController = new MessagesController();
 
 // settings
 routes.post("/settings", settingsController.store);
+routes.get("/settings/:username", settingsController.findByUserName);
+routes.put("/settings/:username", settingsController.update); // change admin: true or false
 
 // users
 routes.post("/users", usersController.store);
