@@ -1,17 +1,9 @@
-import "reflect-metadata";
-
-import express from "express";
-
-import "./database";
-import routes from "./routes";
-
 const port = 3333;
 
-const app = express();
+import server from "./http";
+import "./websocket/client";
 
-app.use(express.json());
-app.use(routes);
-
-app.listen(port, () =>
-  console.log(`Server is running in http://localhost:${port}🚀`)
-);
+server.listen(port, () => {
+  console.log(`Server is running in~> http://localhost:${port}🚀`);
+  console.log(`and frontend~> http://localhost:${port}/pages/client`);
+});
