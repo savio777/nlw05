@@ -19,7 +19,7 @@ export class CreateSettings1619141795028 implements MigrationInterface {
             generationStrategy: "uuid",
             default: "uuid_generate_v4()",
           },
-          { name: "username", type: "varchar", isNullable: false },
+          { name: "username", type: "varchar" },
           { name: "chat", type: "boolean", default: true, isNullable: true },
           { name: "update_at", type: "timestamp", default: "now()" },
           { name: "create_at", type: "timestamp", default: "now()" },
