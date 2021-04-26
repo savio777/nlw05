@@ -18,7 +18,7 @@ export class CreateConnections1619326612169 implements MigrationInterface {
             generationStrategy: "uuid",
             default: "uuid_generate_v4()",
           },
-          { name: "admin_id", type: "uuid", isNullable: true },
+          { name: "admin_id", type: "varchar", isNullable: true },
           { name: "user_id", type: "uuid" },
           { name: "socket_id", type: "varchar" },
           { name: "update_at", type: "timestamp", default: "now()" },

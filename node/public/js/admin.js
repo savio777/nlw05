@@ -92,10 +92,12 @@ function sendMessage(id) {
 }
 
 socket.on("admin_receive_message", (data) => {
-  console.log(data);
   const connection = connectionsUsers.find(
-    (connection) => (connection.socket_id = data.socket_id)
+    (connection) => connection.socket_id === data.socket_id
   );
+
+  console.log(data);
+  console.log("connection.user_id", connection.user_id);
 
   const divMessages = document.getElementById(
     `allMessages${connection.user_id}`

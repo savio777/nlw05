@@ -6,9 +6,14 @@ import ConnectionsService from "../services/ConnectionsService";
 import UsersService from "../services/UsersService";
 import MessagesService from "../services/MessagesService";
 
-interface ParamsDTO {
+interface ParamsFirstSessionDTO {
   text: string;
   email: string;
+}
+
+interface ParamsSendAdminDTO {
+  text: string;
+  socket_admin_id: string;
 }
 
 io.on("connect", (socket: Socket) => {
@@ -16,7 +21,7 @@ io.on("connect", (socket: Socket) => {
   const usersService = new UsersService();
   const messagesService = new MessagesService();
 
-  socket.on("client_first_session", async (params: ParamsDTO) => {
+  socket.on("client_first_session", async (params: ParamsFirstSessionDTO) => {
     //console.log("params", params);
 
     const { text, email } = params;
@@ -59,5 +64,22 @@ io.on("connect", (socket: Socket) => {
     const allMessages = await messagesService.listByUser(user_id);
 
     socket.emit("client_list_all_messages", allMessages);
+
+    const allUsers = await connectionService.findAllWithoutAdmin();
+    io.emit("admin_list_all_users", allUsers);
   });
+
+  socket.on(
+    "client_send_to_admin",
+    async ({ text, socket_admin_id }: ParamsSendAdminDTO) => {
+      const { user_id } = await connectionService.findByUserSocketId(socket.id);
+
+      const message = await messagesService.create({ text, user_id });
+
+      io.to(socket_admin_id).emit("admin_receive_message", {
+        message,
+        socket_id: socket.id,
+      });
+    }
+  );
 });

@@ -49,6 +49,12 @@ class ConnectionsService {
 
     return connections;
   }
+
+  async findByUserSocketId(socket_id: string): Promise<Connections> {
+    const connection = await this.connectionsRepository.findOne({ socket_id });
+
+    return connection;
+  }
 }
 
 export default ConnectionsService;

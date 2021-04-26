@@ -14,7 +14,7 @@ class Connections {
   @PrimaryColumn("uuid")
   id: string;
 
-  @Column("uuid")
+  @Column("varchar")
   admin_id?: string;
 
   @JoinColumn({ name: "user_id" })
