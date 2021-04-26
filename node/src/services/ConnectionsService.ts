@@ -10,6 +10,11 @@ interface ConnectionCreateDTO {
   id?: string;
 }
 
+interface ConnectionUpdateDTO {
+  user_id: string;
+  admin_id: string;
+}
+
 class ConnectionsService {
   private connectionsRepository: Repository<Connections>;
 
@@ -54,6 +59,18 @@ class ConnectionsService {
     const connection = await this.connectionsRepository.findOne({ socket_id });
 
     return connection;
+  }
+
+  async updateAdminByUserId({
+    admin_id,
+    user_id,
+  }: ConnectionUpdateDTO): Promise<void> {
+    await this.connectionsRepository
+      .createQueryBuilder()
+      .update(Connections)
+      .set({ admin_id })
+      .where("user_id = :user_id", { user_id })
+      .execute();
   }
 }
 
